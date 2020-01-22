@@ -1,4 +1,6 @@
 package by.babanin.booklibrary.dao;
 
-public interface PublisherDao extends GeneralDao<PublisherDao> {
+import by.babanin.booklibrary.domain.Publisher;
+
+public interface PublisherDao extends GeneralDao<Publisher> {
 }
