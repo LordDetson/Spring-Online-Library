@@ -1,0 +1,75 @@
+package by.babanin.booklibrary.dao.impl;
+
+import by.babanin.booklibrary.dao.BookDao;
+import by.babanin.booklibrary.dao.repository.BookRepository;
+import by.babanin.booklibrary.domain.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class BookService implements BookDao {
+    private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    @Override
+    public List<Book> findTopBooks(int limit) {
+        return null;
+    }
+
+    @Override
+    public byte[] getContent(Long id) {
+        return bookRepository.getContent(id);
+    }
+
+    @Override
+    public Page<Book> findByGenre(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, Long genreId) {
+        return bookRepository.findByGenre(genreId, PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
+    }
+
+    @Override
+    public List<Book> getAll() {
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Book> getAll(Sort sort) {
+        return bookRepository.findAll(sort);
+    }
+
+    @Override
+    public Page<Book> getAll(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection) {
+        return bookRepository.findAllWithoutContent(PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
+    }
+
+    @Override
+    public List<Book> search(String... patterns) {
+        return null;
+    }
+
+    @Override
+    public Page<Book> search(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, String... patterns) {
+        return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(patterns[0], patterns[1], PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
+    }
+
+    @Override
+    public Book getById(Long id) {
+        return bookRepository.getOne(id);
+    }
+
+    @Override
+    public Book save(Book instance) {
+        return bookRepository.save(instance);
+    }
+
+    @Override
+    public void delete(Book instance) {
+        bookRepository.delete(instance);
+    }
+}
