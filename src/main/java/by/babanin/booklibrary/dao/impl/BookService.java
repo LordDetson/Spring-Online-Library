@@ -23,7 +23,7 @@ public class BookService implements BookDao {
 
     @Override
     public List<Book> findTopBooks(int limit) {
-        return bookRepository.findTopBooks(PageRequest.of(0, limit)).getContent();
+        return bookRepository.findTopBooks(PageRequest.of(0, limit, Sort.by(Sort.Direction.ASC, "name"))).getContent();
     }
 
     @Override
