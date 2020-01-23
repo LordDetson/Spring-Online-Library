@@ -21,7 +21,8 @@ public class LazyDataTable<T> extends LazyDataModel<T> {
     }
 
     @Override
-    public List<T> load(int pageNumber, int count, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<T> load(int first, int count, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        int pageNumber = first / count;
         Sort.Direction sortDirection = Sort.Direction.ASC;
         if (Objects.nonNull(sortOrder)) {
             switch (sortOrder) {
