@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:o="http://omnifaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
 >
 <f:view>
     <div class="box">
@@ -14,18 +14,21 @@
                     <ul class="box-product">
 
                         <li>
+                            <p:repeat value="#{bookController.topBooks}"
+                                      var="book" size="5" varStatus="varStatus" step="1" offset="0">
 
                                 <div class="row-product">
                                     <div class="featuredIndent">
                                         <div class="product_image_container">
 
-
+                                            <o:graphicImage width="157" height="236" value="#{book.image}"
+                                                            dataURI="true"/>
 
                                         </div>
                                     </div>
                                 </div>
 
-
+                            </p:repeat>
                         </li>
 
 

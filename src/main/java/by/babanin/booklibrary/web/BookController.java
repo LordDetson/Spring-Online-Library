@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import java.util.List;
 import java.util.Objects;
 
 @ManagedBean
@@ -25,11 +26,13 @@ import java.util.Objects;
 @Log
 public class BookController extends GeneralController<Book> {
     public static final int DEFAULT_PAGE_SIZE = 20;
+    public static final int DEFAULT_TOP_SIZE = 5;
     @Autowired
     private BookDao bookDao;
     private int rowsCount = DEFAULT_PAGE_SIZE;
     private SearchType searchType;
     private Page<Book> bookPage;
+    private List<Book> topBooks;
     private LazyDataModel<Book> dataModel;
 
     @PostConstruct
@@ -54,5 +57,10 @@ public class BookController extends GeneralController<Book> {
             }
         }
         return bookPage;
+    }
+
+    public List<Book> getTopBooks() {
+        topBooks = bookDao.findTopBooks(DEFAULT_TOP_SIZE);
+        return topBooks;
     }
 }
