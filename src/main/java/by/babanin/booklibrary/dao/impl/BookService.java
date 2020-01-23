@@ -51,7 +51,7 @@ public class BookService implements BookDao {
 
     @Override
     public List<Book> search(String... patterns) {
-        return null;
+        throw new UnsupportedOperationException("No method implementation");
     }
 
     @Override
