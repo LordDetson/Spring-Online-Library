@@ -38,7 +38,7 @@ public class AuthorService implements AuthorDao {
 
     @Override
     public List<Author> search(String... patterns) {
-        return null;
+        throw new UnsupportedOperationException("No method implementation");
     }
 
     @Override
