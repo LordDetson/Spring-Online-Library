@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BookService implements BookDao {
@@ -65,7 +66,12 @@ public class BookService implements BookDao {
 
     @Override
     public Book save(Book instance) {
-        return bookRepository.save(instance);
+        Book book = bookRepository.save(instance);
+        if (Objects.nonNull(instance.getContent())) {
+            bookRepository.updateContent(instance.getContent(), instance.getId());
+        }
+        book.setContent(instance.getContent());
+        return book;
     }
 
     @Override
