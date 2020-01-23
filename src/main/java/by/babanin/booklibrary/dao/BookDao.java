@@ -12,4 +12,8 @@ public interface BookDao extends GeneralDao<Book> {
     byte[] getContent(Long id);
 
     Page<Book> findByGenre(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, Long genreId);
+
+    void updateViewCount(long viewCount, Long id);
+
+    void updateRating(long totalRating, long totalVoteCount, int avgRating, Long id);
 }
