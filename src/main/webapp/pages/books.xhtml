@@ -43,7 +43,12 @@
 
                         <!--обложка книги-->
                         <div class="book-icon">
-                            <o:graphicImage cache="false" value="#{book.image}" dataURI="true"/>
+                            <h:outputLink value="#{request.contextPath}/readBook" target="_blank"
+                                          styleClass="read-link">
+                                <f:param name="id" value="#{book.id}"/>
+                                <f:param name="viewCount" value="#{book.viewCount}"/>
+                                <o:graphicImage cache="false" value="#{book.image}" dataURI="true"/>
+                            </h:outputLink>
                         </div>
 
 

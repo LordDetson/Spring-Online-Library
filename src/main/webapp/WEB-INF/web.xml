@@ -15,6 +15,16 @@
         <url-pattern>/javax.faces.resource/*</url-pattern>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>bookContentProvider</servlet-name>
+        <servlet-class>by.babanin.booklibrary.servlet.BookContentProvider</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>bookContentProvider</servlet-name>
+        <url-pattern>/readBook</url-pattern>
+    </servlet-mapping>
     
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
