@@ -1,6 +1,7 @@
 package by.babanin.booklibrary.web;
 
 import by.babanin.booklibrary.dao.BookDao;
+import by.babanin.booklibrary.dao.GenreDao;
 import by.babanin.booklibrary.domain.Book;
 import by.babanin.booklibrary.web.enums.SearchType;
 import by.babanin.booklibrary.web.model.LazyDataTable;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 @ManagedBean
 @SessionScoped
@@ -29,11 +32,15 @@ public class BookController extends GeneralController<Book> {
     public static final int DEFAULT_TOP_SIZE = 5;
     @Autowired
     private BookDao bookDao;
+    @Autowired
+    private GenreDao genreDao;
     private int rowsCount = DEFAULT_PAGE_SIZE;
-    private SearchType searchType;
+    private SearchType searchType = SearchType.ALL;
     private Page<Book> bookPage;
     private List<Book> topBooks;
     private LazyDataModel<Book> dataModel;
+    private Long selectedGenreId;
+    private String searchText;
 
     @PostConstruct
     public void init() {
@@ -43,18 +50,17 @@ public class BookController extends GeneralController<Book> {
     @Override
     public Page<Book> getContent(int pageNumber, int count, String sortField, Sort.Direction sortDirection) {
         if (Objects.isNull(sortField)) sortField = "name";
-        if (Objects.isNull(searchType)) {
-            bookPage = bookDao.getAll(pageNumber, count, sortField, sortDirection);
-        } else {
-            switch (searchType) {
-                case ALL:
-                    bookPage = bookDao.getAll(pageNumber, count, sortField, sortDirection);
-                    break;
-                case SEARCH_TEXT:
-                    break;
-                case SEARCH_GENRE:
-                    break;
-            }
+        switch (searchType) {
+            case ALL:
+                bookPage = bookDao.getAll(pageNumber, count, sortField, sortDirection);
+                break;
+            case SEARCH_TEXT:
+                bookPage = bookDao.search(pageNumber, count, sortField, sortDirection, searchText, searchText);
+                break;
+            case SEARCH_GENRE:
+                bookPage = bookDao.findByGenre(pageNumber, count, sortField, sortDirection, selectedGenreId);
+                bookPage.getContent().forEach(System.out::println);
+                break;
         }
         return bookPage;
     }
@@ -62,5 +68,33 @@ public class BookController extends GeneralController<Book> {
     public List<Book> getTopBooks() {
         topBooks = bookDao.findTopBooks(DEFAULT_TOP_SIZE);
         return topBooks;
+    }
+
+    public void setAll() {
+        searchType = SearchType.ALL;
+        this.selectedGenreId = null;
+    }
+
+    public void searchByGenre(Long id) {
+        searchType = SearchType.SEARCH_GENRE;
+        this.selectedGenreId = id;
+    }
+
+    public void searchByBookName() {
+        searchType = SearchType.SEARCH_TEXT;
+    }
+
+    public String getSearchMessage() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("book_library", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        String message = null;
+        switch (searchType) {
+            case SEARCH_GENRE:
+                message = resourceBundle.getString("genre") + ": '" + genreDao.getById(selectedGenreId).getName() + "'";
+                break;
+            case SEARCH_TEXT:
+                message = resourceBundle.getString("search") + ": '" + searchText + "'";
+                break;
+        }
+        return message;
     }
 }

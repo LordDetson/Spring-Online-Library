@@ -4,25 +4,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://www.springframework.org/tags/form">
 <f:view>
 
     <b:row>
 
         <div class="genres">
-
-            <!--ссылка на поиск всех жанров-->
-            <p:commandLink styleClass="list-group-item all-genres">
-                <p:outputLabel value="#{msg.all_genres}" styleClass="genre-name all-genres"/>
-            </p:commandLink>
-
-            <!--меню с навзваниями жанров (для поиска книг по жанрам) -->
-            <p:repeat value="#{genreController.all}" var="genre" varStatus="varStatus" offset="0" step="1" size="20">
-                <p:commandLink class="list-group-item">
-                    <p:outputLabel value="#{genre.name}" styleClass="genre-name"/>
+                <!--ссылка на поиск всех жанров-->
+                <p:commandLink styleClass="list-group-item all-genres" actionListener="#{bookController.setAll()}"
+                               update="@([id$=booksList])">
+                    <p:outputLabel value="#{msg.all_genres}" styleClass="genre-name all-genres"/>
                 </p:commandLink>
-            </p:repeat>
 
+                <!--меню с навзваниями жанров (для поиска книг по жанрам) -->
+                <p:repeat value="#{genreController.all}" var="genre">
+                    <p:commandLink class="list-group-item" actionListener="#{bookController.searchByGenre(genre.id)}"
+                                   update="@([id$=booksList])">
+                        <p:outputLabel value="#{genre.name}" styleClass="genre-name"/>
+                    </p:commandLink>
+                </p:repeat>
         </div>
     </b:row>
 
