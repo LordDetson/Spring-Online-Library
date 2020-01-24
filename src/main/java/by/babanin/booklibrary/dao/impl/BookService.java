@@ -73,7 +73,7 @@ public class BookService implements BookDao {
 
     @Override
     public Book getById(Long id) {
-        return bookRepository.getOne(id);
+        return bookRepository.findById(id).get();
     }
 
     @Override

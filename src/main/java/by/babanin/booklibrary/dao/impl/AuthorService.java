@@ -48,7 +48,7 @@ public class AuthorService implements AuthorDao {
 
     @Override
     public Author getById(Long id) {
-        return authorRepository.getOne(id);
+        return authorRepository.findById(id).get();
     }
 
     @Override

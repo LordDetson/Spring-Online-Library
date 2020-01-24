@@ -47,7 +47,7 @@ public class PublisherService implements PublisherDao {
 
     @Override
     public Publisher getById(Long id) {
-        return publisherRepository.getOne(id);
+        return publisherRepository.findById(id).get();
     }
 
     @Override
