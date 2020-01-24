@@ -1,7 +1,7 @@
 package by.babanin.booklibrary.web;
 
-import by.babanin.booklibrary.dao.GenreDao;
-import by.babanin.booklibrary.domain.Genre;
+import by.babanin.booklibrary.dao.AuthorDao;
+import by.babanin.booklibrary.domain.Author;
 import by.babanin.booklibrary.web.model.LazyDataTable;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,14 +20,11 @@ import java.util.List;
 @SessionScoped
 @Component
 @Getter @Setter
-public class GenreController extends GeneralController<Genre> {
-    private static final int DEFAULT_ROWS_COUNT = 20;
-    private int rowsCount = DEFAULT_ROWS_COUNT;
+public class AuthorController extends GeneralController<Author> {
     @Autowired
-    private GenreDao genreDao;
-    private Genre selectedGenre;
-    private LazyDataModel<Genre> dataModel;
-    private Page<Genre> genrePage;
+    private AuthorDao authorDao;
+    private Page<Author> authorPage;
+    private LazyDataModel<Author> dataModel;
 
     @PostConstruct
     public void init() {
@@ -35,7 +32,7 @@ public class GenreController extends GeneralController<Genre> {
     }
 
     @Override
-    public Page<Genre> getContent(int pageNumber, int count, String sortField, Sort.Direction sortDirection) {
+    public Page<Author> getContent(int pageNumber, int count, String sortField, Sort.Direction sortDirection) {
         throw new UnsupportedOperationException("No method implementation");
     }
 
@@ -54,11 +51,7 @@ public class GenreController extends GeneralController<Genre> {
 
     }
 
-    public List<Genre> getAll() {
-        return genreDao.getAll(Sort.by(Sort.Direction.ASC, "name"));
-    }
-
-    public List<Genre> find(String name) {
-        return genreDao.search(name);
+    public List<Author> find(String fio) {
+        return authorDao.search(fio);
     }
 }

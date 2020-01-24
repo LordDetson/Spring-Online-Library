@@ -8,7 +8,11 @@ import by.babanin.booklibrary.web.model.LazyDataTable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.util.List;
@@ -41,6 +46,9 @@ public class BookController extends GeneralController<Book> {
     private LazyDataModel<Book> dataModel;
     private Long selectedGenreId;
     private String searchText;
+    private byte[] uploadedImage;
+    private byte[] uploadedContent;
+    private Book selectedBook;
 
     @PostConstruct
     public void init() {
@@ -96,5 +104,45 @@ public class BookController extends GeneralController<Book> {
                 break;
         }
         return message;
+    }
+
+    public void uploadImage(FileUploadEvent event) {
+        UploadedFile file = event.getFile();
+        if (Objects.nonNull(file))
+            uploadedImage = file.getContents();
+    }
+
+    public void uploadContent(FileUploadEvent event) {
+        UploadedFile file = event.getFile();
+        if (Objects.nonNull(file))
+            uploadedContent = file.getContents();
+    }
+
+    public void save() {
+        if (Objects.nonNull(uploadedImage)) selectedBook.setImage(uploadedImage);
+        if (Objects.nonNull(uploadedContent)) selectedBook.setContent(uploadedContent);
+        bookDao.save(selectedBook);
+        RequestContext.getCurrentInstance().execute("PF('dialogEditBook').hide()");
+    }
+
+    public void onCloseDialog(CloseEvent event) {
+        uploadedImage = null;
+        uploadedContent = null;
+    }
+
+    @Override
+    public void addAction() {
+
+    }
+
+    @Override
+    public void editAction() {
+        uploadedImage = selectedBook.getImage();
+        RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
+    }
+
+    @Override
+    public void deleteAction() {
+
     }
 }
