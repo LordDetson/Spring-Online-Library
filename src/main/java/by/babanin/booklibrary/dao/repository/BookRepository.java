@@ -15,7 +15,7 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(String name, String fio, Pageable pageable);
 
-    @Query("select new Book(b.id, b.name, b.pageCount, b.isbn, b.genre, b.author, b.image, b.publisher, b.publishYear, b.description) from Book b")
+    @Query("select new Book(b.id, b.name, b.pageCount, b.isbn, b.genre, b.author, b.image, b.publisher, b.publishYear, b.avgRating, b.totalVoteCount, b.totalRating, b.viewCount, b.description) from Book b")
     Page<Book> findAllWithoutContent(Pageable pageable);
 
     @Modifying(clearAutomatically = true)
@@ -25,7 +25,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select new Book(b.id, b.image) from Book b")
     Page<Book> findTopBooks(Pageable pageable);
 
-    @Query("select new Book(b.id, b.name, b.pageCount, b.isbn, b.genre, b.author, b.image, b.publisher, b.publishYear, b.description) from Book b where b.genre.id=:genreId")
+    @Query("select new Book(b.id, b.name, b.pageCount, b.isbn, b.genre, b.author, b.image, b.publisher, b.publishYear, b.avgRating, b.totalVoteCount, b.totalRating, b.viewCount, b.description) from Book b where b.genre.id=:genreId")
     Page<Book> findByGenre(@Param("genreId") Long genreId, Pageable pageable);
 
     @Query("select b.content from Book b where b.id=:id")

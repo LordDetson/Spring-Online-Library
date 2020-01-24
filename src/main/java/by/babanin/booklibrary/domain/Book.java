@@ -24,7 +24,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String name, Integer pageCount, String isbn, Genre genre, Author author, byte[] image, Publisher publisher, Integer publishYear, String description) {
+    public Book(Long id, String name, Integer pageCount, String isbn, Genre genre, Author author, byte[] image, Publisher publisher, Integer publishYear, Integer avgRating, Long totalVoteCount, Long totalRating, Long viewCount, String description) {
         this.id = id;
         this.name = name;
         this.pageCount = pageCount;
@@ -34,6 +34,10 @@ public class Book {
         this.image = image;
         this.publisher = publisher;
         this.publishYear = publishYear;
+        this.avgRating = avgRating;
+        this.totalVoteCount = totalVoteCount;
+        this.totalRating = totalRating;
+        this.viewCount = viewCount;
         this.description = description;
     }
 
