@@ -37,12 +37,12 @@ public class PublisherService implements PublisherDao {
 
     @Override
     public List<Publisher> search(String... patterns) {
-        throw new UnsupportedOperationException("No method implementation");
+        return publisherRepository.findByNameContainingIgnoreCaseOrderByName(patterns[0]);
     }
 
     @Override
     public Page<Publisher> search(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, String... patterns) {
-        return publisherRepository.findByNameContainingIgnoreCaseOrderByName(patterns[0], PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
+        return publisherRepository.findByNameContainingIgnoreCase(patterns[0], PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
     }
 
     @Override

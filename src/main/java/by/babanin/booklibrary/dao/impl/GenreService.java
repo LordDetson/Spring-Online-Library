@@ -4,6 +4,7 @@ import by.babanin.booklibrary.dao.GenreDao;
 import by.babanin.booklibrary.dao.repository.GenreRepository;
 import by.babanin.booklibrary.domain.Genre;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class GenreService implements GenreDao {
 
     @Override
     public Page<Genre> getAll(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection) {
-        throw new UnsupportedOperationException("No method implementation");
+        return genreRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
     }
 
     @Override
@@ -41,7 +42,7 @@ public class GenreService implements GenreDao {
 
     @Override
     public Page<Genre> search(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, String... patterns) {
-        throw new UnsupportedOperationException("No method implementation");
+        return genreRepository.findByNameContainingIgnoreCase(patterns[0], PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
     }
 
     @Override

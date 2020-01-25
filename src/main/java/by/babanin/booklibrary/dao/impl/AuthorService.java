@@ -38,12 +38,12 @@ public class AuthorService implements AuthorDao {
 
     @Override
     public List<Author> search(String... patterns) {
-        throw new UnsupportedOperationException("No method implementation");
+        return authorRepository.findByFioContainingIgnoreCaseOrderByFio(patterns[0]);
     }
 
     @Override
     public Page<Author> search(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, String... patterns) {
-        return authorRepository.findByFioContainingIgnoreCaseOrderByFio(patterns[0],PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
+        return authorRepository.findByFioContainingIgnoreCase(patterns[0],PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
     }
 
     @Override

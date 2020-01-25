@@ -63,12 +63,12 @@ public class BookService implements BookDao {
 
     @Override
     public List<Book> search(String... patterns) {
-        throw new UnsupportedOperationException("No method implementation");
+        return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(patterns[0], patterns[1]);
     }
 
     @Override
     public Page<Book> search(int pageNumber, int pageSize, String sortField, Sort.Direction sortDirection, String... patterns) {
-        return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(patterns[0], patterns[1], PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
+        return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCase(patterns[0], patterns[1], PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortField)));
     }
 
     @Override
@@ -78,10 +78,12 @@ public class BookService implements BookDao {
 
     @Override
     public Book save(Book instance) {
+        System.out.println("****** Save book service");
         Book book = bookRepository.save(instance);
-        if (Objects.nonNull(instance.getContent())) {
+        if (Objects.nonNull(instance.getContent()))
             bookRepository.updateContent(instance.getContent(), instance.getId());
-        }
+        if (Objects.nonNull(instance.getImage()))
+            bookRepository.updateImage(instance.getImage(), instance.getId());
         book.setContent(instance.getContent());
         return book;
     }
