@@ -13,7 +13,9 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    Page<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(String name, String fio, Pageable pageable);
+    Page<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCase(String name, String fio, Pageable pageable);
+
+    List<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(String name, String fio);
 
     @Query("select new Book(b.id, b.name, b.pageCount, b.isbn, b.genre, b.author, b.image, b.publisher, b.publishYear, b.avgRating, b.totalVoteCount, b.totalRating, b.viewCount, b.description) from Book b")
     Page<Book> findAllWithoutContent(Pageable pageable);
@@ -21,6 +23,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Modifying(clearAutomatically = true)
     @Query("update Book b set b.content=:content where b.id=:id")
     void updateContent(@Param("content") byte[] content, @Param("id") Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Book b set b.image=:image where b.id=:id")
+    void updateImage(@Param("image") byte[] image, @Param("id") Long id);
 
     @Query("select new Book(b.id, b.image) from Book b")
     Page<Book> findTopBooks(Pageable pageable);
