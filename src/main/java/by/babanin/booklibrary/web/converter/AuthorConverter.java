@@ -2,6 +2,7 @@ package by.babanin.booklibrary.web.converter;
 
 import by.babanin.booklibrary.dao.AuthorDao;
 import by.babanin.booklibrary.domain.Author;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.faces.component.UIComponent;
@@ -21,7 +22,7 @@ public class AuthorConverter implements Converter {
     @Override
 
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
-        return authorDao.getById(Long.valueOf(s));
+        return authorDao.search(0, 1, "fio", Sort.Direction.ASC, s).getContent().get(0);
     }
 
     @Override

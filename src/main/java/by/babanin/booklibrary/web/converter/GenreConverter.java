@@ -2,6 +2,7 @@ package by.babanin.booklibrary.web.converter;
 
 import by.babanin.booklibrary.dao.GenreDao;
 import by.babanin.booklibrary.domain.Genre;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.faces.component.UIComponent;
@@ -20,7 +21,7 @@ public class GenreConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
-        return genreDao.getById(Long.valueOf(s));
+        return genreDao.search(0, 1, "name", Sort.Direction.ASC, s).getContent().get(0);
     }
 
     @Override
