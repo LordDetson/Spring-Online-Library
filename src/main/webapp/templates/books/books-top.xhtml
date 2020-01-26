@@ -2,8 +2,10 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:p="http://primefaces.org/ui"
 >
 <f:view>
     <div class="box">
@@ -20,10 +22,12 @@
                                 <div class="row-product">
                                     <div class="featuredIndent">
                                         <div class="product_image_container">
-
-                                            <o:graphicImage width="157" height="236" value="#{book.image}"
-                                                            dataURI="true"/>
-
+                                            <h:outputLink value="#{request.contextPath}/readBook" target="_blank">
+                                                <f:param name="id" value="#{book.id}"/>
+                                                <f:param name="viewCount" value="#{book.viewCount}"/>
+                                                <o:graphicImage width="157" height="236" value="#{book.image}"
+                                                                dataURI="true"/>
+                                            </h:outputLink>
                                         </div>
                                     </div>
                                 </div>
