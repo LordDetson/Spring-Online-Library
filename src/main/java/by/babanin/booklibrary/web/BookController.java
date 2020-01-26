@@ -143,6 +143,6 @@ public class BookController extends GeneralController<Book> {
 
     @Override
     public void deleteAction() {
-
+        bookDao.delete(selectedBook);
     }
 }
