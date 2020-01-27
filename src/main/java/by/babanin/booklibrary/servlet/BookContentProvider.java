@@ -33,7 +33,7 @@ public class BookContentProvider extends HttpServlet {
                 resp.setContentLength(content.length);
                 out.write(content);
             } else {
-                resp.sendRedirect(req.getContextPath()+"/error/error-pdf.html");
+                resp.sendRedirect(req.getContextPath()+"/pages/error/error-pdf.html");
             }
         } catch (Exception e) {
             e.printStackTrace();
