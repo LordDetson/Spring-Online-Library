@@ -136,7 +136,21 @@ public class BookController extends GeneralController<Book> {
 
     @Override
     public void addAction() {
+        selectedBook = new Book();
+        uploadedImage = loadDefaultImage();
+        uploadedContent = null;
 
+        RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
+    }
+
+    private byte[] loadDefaultImage() {
+        InputStream imageStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/images/no-cover.jpg");
+        try {
+            return IOUtils.toByteArray(imageStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
