@@ -8,7 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,7 +34,7 @@ public class Author {
     @Basic(optional = false)
     @Column(name = "birthday", nullable = false)
     @JsonView(AuthorView.NoBooks.class)
-    private LocalDate birthday;
+    private Date birthday;
 
     @Basic
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
