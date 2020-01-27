@@ -23,7 +23,7 @@
 
                                 <ui:fragment ><li><o:graphicImage name="images/books.png" style="height:50px; padding:10px;" dataURI="true"/></li></ui:fragment>
 
-                                <ui:fragment>
+                                <ui:fragment rendered="#{userController.hasRole('ADMIN')}">
                                     <li class="colored">
                                         <p:commandLink title="Add button"
                                                        styleClass="new-book-item"
