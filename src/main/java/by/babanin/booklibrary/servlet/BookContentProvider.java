@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 public class BookContentProvider extends HttpServlet {
     private ApplicationContext context;
@@ -26,10 +27,14 @@ public class BookContentProvider extends HttpServlet {
             long viewCount = Long.parseLong(req.getParameter("viewCount"));
             BookDao bookDao = context.getBean(BookDao.class);
             byte[] content = bookDao.getContent(id);
-            bookDao.updateViewCount(viewCount + 1, id);
-            resp.setContentType("application/pdf");
-            resp.setContentLength(content.length);
-            out.write(content);
+            if (Objects.nonNull(content)) {
+                bookDao.updateViewCount(viewCount + 1, id);
+                resp.setContentType("application/pdf");
+                resp.setContentLength(content.length);
+                out.write(content);
+            } else {
+                resp.sendRedirect(req.getContextPath()+"/error/error-pdf.html");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
