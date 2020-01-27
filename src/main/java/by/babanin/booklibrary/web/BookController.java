@@ -8,9 +8,11 @@ import by.babanin.booklibrary.web.model.LazyDataTable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RateEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,12 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -144,5 +148,24 @@ public class BookController extends GeneralController<Book> {
     @Override
     public void deleteAction() {
         bookDao.delete(selectedBook);
+    }
+
+    public void onrate(RateEvent event) {
+        Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        int bookIndex = Integer.parseInt(requestParameterMap.get("bookIndex"));
+        Book book = bookPage.getContent().get(bookIndex);
+        long rating = Long.parseLong(event.getRating().toString());
+        long newRating = book.getTotalRating() + rating;
+        long newVoteCount = book.getTotalVoteCount() + 1;
+        int newAvgRating = calcAverageRating(newRating, newVoteCount);
+
+        System.out.println("avgRating = " + newAvgRating + ", totalVoteCount = " + newVoteCount + ", totalRating = " + newRating);
+        bookDao.updateRating(newRating, newVoteCount, newAvgRating, book.getId());
+    }
+
+    private int calcAverageRating(long totalRating, long totalVoteCount) {
+        if (totalRating == 0 || totalVoteCount == 0)
+            return 0;
+        return Long.valueOf(totalRating / totalVoteCount).intValue();
     }
 }
